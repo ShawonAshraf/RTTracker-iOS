@@ -35,6 +35,8 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     @IBOutlet weak var simulateButton: UIButton!
     // map view
     @IBOutlet weak var mapView: GMSMapView!
+    // result label
+    @IBOutlet weak var resultLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,13 +64,14 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     //
     // simuylate movement
     @IBAction func simulateLocation(_ sender: Any) {
-        let parameters: Parameters = ["longitude":longitude, "latitude": lattitude]
+        let parameters: Parameters = ["longitude":longitude, "lattitude": lattitude]
         Alamofire.request(API_URL, method: .post, parameters: parameters).validate().responseJSON { (response) in
             switch response.result {
             case .success(_):
-                print("Simulating...")
+                //print("Simulating...")
+                self.resultLabel.text = "Simulating..."
             case .failure(let error):
-                print(error)
+                self.resultLabel.text = "Error! \(error.localizedDescription)"
             }
         }
     }
