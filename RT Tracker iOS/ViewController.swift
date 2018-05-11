@@ -14,7 +14,7 @@ import GoogleMaps
 class ViewController: UIViewController, GMSMapViewDelegate {
     // Consts
     //
-    let API_URL = "https://dashboard.heroku.com/apps/dry-atoll-86022/api/simloc"
+    let API_URL = "https://dry-atoll-86022.herokuapp.com/api/simloc"
     
     // Vars
     //
@@ -22,7 +22,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     var locationMarker: GMSMarker!
     
     // default values
-    var lattitude = 23.7612372
+    var latitude = 23.7612372
     var longitude = 90.4322414
     
     // Pusher object
@@ -41,12 +41,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let camera = GMSCameraPosition.camera(withLatitude: lattitude, longitude: longitude, zoom: 15)
+        let camera = GMSCameraPosition.camera(withLatitude: latitude, longitude: longitude, zoom: 15)
         mapView.camera = camera
         mapView.delegate = self
         
         // create a location marker at the center of the map
-        locationMarker = GMSMarker(position: CLLocationCoordinate2D(latitude: lattitude, longitude: longitude))
+        locationMarker = GMSMarker(position: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
         locationMarker.map = mapView
         
         // connect to pusher
@@ -62,9 +62,9 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     
     // Actions
     //
-    // simuylate movement
+    // simulate movement
     @IBAction func simulateLocation(_ sender: Any) {
-        let parameters: Parameters = ["longitude":longitude, "lattitude": lattitude]
+        let parameters: Parameters = ["latitude": latitude, "longitude":longitude]
         Alamofire.request(API_URL, method: .post, parameters: parameters).validate().responseJSON { (response) in
             switch response.result {
             case .success(_):
@@ -82,7 +82,7 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     // connect to pusher service
     private func listenForCoordUpdates() {
         // Instantiate Pusher
-        pusher = Pusher(key: "PUSHER_APP_KEY", options: PusherClientOptions(host: .cluster("PUSHER_APP_CLUSTER")))
+        pusher = Pusher(key: "1ebaf7c01d0aa8db6fde", options: PusherClientOptions(host: .cluster("ap1")))
         // Subscribe to a Pusher channel
         let channel = pusher.subscribe("mapCoordinates")
         //
@@ -91,16 +91,37 @@ class ViewController: UIViewController, GMSMapViewDelegate {
         //
         channel.bind(eventName: "update", callback: { (data: Any?) -> Void in
             if let data = data as? [String: AnyObject] {
-                self.longitude = data["longitude"] as! Double
-                self.lattitude  = data["latitude"] as! Double
+                
+                //
+                // Data can be nil because of latency
+                // don't update if nil
+                //
+                let long =  data["longitude"]
+                let lat = data["latitude"]
+                
+                if long != nil {
+                    self.longitude = long as! Double
+                }
+                if lat != nil {
+                    self.latitude = lat as! Double
+                }
+                
+                //
+                // update label
+                //
+                self.resultLabel.text = "Longitude : \(self.longitude), Latitude: \(self.latitude)"
+                
                 //
                 // Update marker position using data from Pusher
                 //
-                self.locationMarker.position = CLLocationCoordinate2D(latitude: self.lattitude, longitude: self.longitude)
+                self.locationMarker.position = CLLocationCoordinate2D(latitude: self.latitude, longitude: self.longitude)
                 self.mapView.camera = GMSCameraPosition.camera(withTarget: self.locationMarker.position, zoom: 15.0)
             }
         })
+        
+        //
         // Connect to pusher
+        //
         pusher.connect()
     }
 }
