@@ -12,14 +12,18 @@ import Alamofire
 import GoogleMaps
 
 class ViewController: UIViewController, GMSMapViewDelegate {
+    // Consts
+    //
+    let API_URL = "https://dashboard.heroku.com/apps/dry-atoll-86022/api/simloc"
+    
     // Vars
     //
     //location marker
     var locationMarker: GMSMarker!
     
     // default values
-    var longitude = 23.7612372
-    var lattitude = 90.4322414
+    var lattitude = 23.7612372
+    var longitude = 90.4322414
     
     // Pusher object
     var pusher: Pusher!
@@ -58,7 +62,15 @@ class ViewController: UIViewController, GMSMapViewDelegate {
     //
     // simuylate movement
     @IBAction func simulateLocation(_ sender: Any) {
-        
+        let parameters: Parameters = ["longitude":longitude, "latitude": lattitude]
+        Alamofire.request(API_URL, method: .post, parameters: parameters).validate().responseJSON { (response) in
+            switch response.result {
+            case .success(_):
+                print("Simulating...")
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
     
     
