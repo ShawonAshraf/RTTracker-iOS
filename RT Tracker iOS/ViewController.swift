@@ -96,14 +96,12 @@ class ViewController: UIViewController, GMSMapViewDelegate {
                 // Data can be nil because of latency
                 // don't update if nil
                 //
-                let long =  data["longitude"]
-                let lat = data["latitude"]
-                
-                if long != nil {
-                    self.longitude = long as! Double
+                if let latitude = data["lat"] as? Double {
+                    self.latitude = latitude
                 }
-                if lat != nil {
-                    self.latitude = lat as! Double
+                
+                if let longitude = data["long"] as? Double {
+                    self.longitude = longitude
                 }
                 
                 //
