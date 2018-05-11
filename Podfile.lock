@@ -1,11 +1,19 @@
 PODS:
-  - Alamofire (4.6.0)
-  - GoogleMaps (2.5.0):
-    - GoogleMaps/Maps (= 2.5.0)
-  - GoogleMaps/Base (2.5.0)
-  - GoogleMaps/Maps (2.5.0):
+  - Alamofire (4.7.2)
+  - CryptoSwift (0.9.0)
+  - GoogleMaps (2.7.0):
+    - GoogleMaps/Maps (= 2.7.0)
+  - GoogleMaps/Base (2.7.0)
+  - GoogleMaps/Maps (2.7.0):
     - GoogleMaps/Base
-  - PusherSwift (5.1.0)
+  - PusherSwift (6.0.0):
+    - CryptoSwift (~> 0.9.0)
+    - ReachabilitySwift (~> 4.1.0)
+    - StarscreamFork (~> 3.0.6)
+    - TaskQueue (~> 1.1.1)
+  - ReachabilitySwift (4.1.0)
+  - StarscreamFork (3.0.6)
+  - TaskQueue (1.1.1)
 
 DEPENDENCIES:
   - Alamofire
@@ -15,13 +23,21 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - CryptoSwift
     - GoogleMaps
     - PusherSwift
+    - ReachabilitySwift
+    - StarscreamFork
+    - TaskQueue
 
 SPEC CHECKSUMS:
-  Alamofire: f41a599bd63041760b26d393ec1069d9d7b917f4
-  GoogleMaps: c087b8e5dfe87ca6ebf59adb9b4894a4146bec4f
-  PusherSwift: ea736474a51f5e6764b252dfda14014cfa3e828f
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  CryptoSwift: bca8c5b653dcc2d9734409242a070ff53bafac86
+  GoogleMaps: f79af95cb24d869457b1f961c93d3ce8b2f3b848
+  PusherSwift: f9312465c069707c86e9320fc3bedccb0afb38ed
+  ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
+  StarscreamFork: e95299dfc1d27d55ae622edb9a3d254791dea66d
+  TaskQueue: 53a3cdaf817d9ce3cd50837ff6610aeb7b968997
 
 PODFILE CHECKSUM: 457ad76440483c99948d4c0bd492077022dac37b
 
